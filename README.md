@@ -1,5 +1,7 @@
 # DaLo Chat App
 
+# Tron tron viet nam
+
 A new Flutter Chat app for final project of New Technology in Software Development subject!
 
 ## Getting Started
