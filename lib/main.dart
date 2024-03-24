@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yolo_app/configs/app_routes.dart';
+import 'configs/routes/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
