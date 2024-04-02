@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:yolo_app/configs/app_routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'configs/routes/app_routes.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'services_locator.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await setUpDI();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => getIt<AuthBloc>(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: buildRoutes(),
-      initialRoute: AppRoutes.initialPage,
+      initialRoute: AppRoutes.initialScreen,
     );
   }
 }
