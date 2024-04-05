@@ -5,6 +5,7 @@ import '../../features/auth/presentation/pages/initial_screen.dart';
 import '../../features/auth/presentation/pages/login_screen.dart';
 import '../../features/auth/presentation/pages/register_screen.dart';
 import '../../features/auth/presentation/pages/register_succeed_screen.dart';
+import '../../features/auth/presentation/pages/vertify_registry_screen.dart';
 import '../../features/chat/presentation/pages/chat_manager_screen.dart';
 import '../../features/chat/presentation/pages/group_chat_screen.dart';
 import '../../features/chat/presentation/pages/single_chat_screen.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static String registerScreen = './register_route';
   static String forgotPasswordScreen = './forgot_password_route';
   static String registerSucceedScreen = './register_succeed_route';
+  static String vertifyRegistryScreen = './vertify_registry_route';
 
   // Chat routes
   static String chatManagerScreen = './chat_manager_route';
@@ -33,5 +35,6 @@ Map<String, Widget Function(BuildContext)> buildRoutes() {
     AppRoutes.chatManagerScreen: (_) => const ChatManagerScreen(),
     AppRoutes.singleChatScreen: (_) => const SingleChatScreen(),
     AppRoutes.groupChatScreen: (_) => const GroupChatScreen(),
+    AppRoutes.vertifyRegistryScreen: (_) => const VertifyRegistryScreen(),
   };
 }

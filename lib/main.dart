@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'configs/routes/app_routes.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'services_locator.dart';
+import 'injection_container.dart';
 
 void main() async {
   await setUpDI();

@@ -21,24 +21,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isValidEmailAndPassword = true;
   bool isValidEmail = true;
 
-  _loginRequested() {
-    BlocProvider.of<AuthBloc>(context).add(
-      LoginRequested(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      ),
-    );
-  }
+  String? errorText;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _emailController.addListener(() {
-      setState(() {
-        isValidEmailAndPassword = true;
-      });
-    });
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
   }
 
   @override
@@ -104,10 +93,67 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
               ),
-              CustomInput(
-                hintText: "Email",
-                isSecure: false,
-                controller: _emailController,
+              BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is ValidateEmailSuccess) {
+                    setState(() {
+                      errorText = null;
+                    });
+                  }
+                  if (state is ValidateEmailFailed) {
+                    setState(() {
+                      errorText = state.error;
+                    });
+                  }
+                },
+                child: TextField(
+                  controller: _emailController,
+                  style: sfRegular(
+                    tColor: AppColors.mainTextColor,
+                    tSize: 15,
+                  ),
+                  autofocus: true,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(20),
+                      filled: true,
+                      fillColor: AppColors.regularGray,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppColors.primaryThemeColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.borderGray),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      errorText: errorText,
+                      hintText: "Email",
+                      hintStyle: sfRegular(
+                        tColor: AppColors.mediumGray,
+                        tSize: 15,
+                      )),
+                  onTapOutside: (event) => {
+                    FocusManager.instance.primaryFocus?.unfocus(),
+                  },
+                  onChanged: (value) {
+                    if (_emailController.text.isNotEmpty) {
+                      BlocProvider.of<AuthBloc>(context).add(
+                        CheckEmailRequested(
+                          email: _emailController.text,
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -116,6 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: "Mật khẩu",
                 isSecure: true,
                 controller: _passwordController,
+                isEmailInput: false,
               ),
               const SizedBox(
                 height: 20,
@@ -147,10 +194,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: "Đăng nhập",
                       textStyle: sfSemibold(tColor: Colors.white, tSize: 17),
                       bgColor: AppColors.primaryThemeColor,
-                      event: () => {_loginRequested()},
+                      event: () => {
+                        if (_emailController.text.trim().isNotEmpty &&
+                            _passwordController.text.trim().isNotEmpty)
+                          {
+                            BlocProvider.of<AuthBloc>(context).add(
+                              LoginRequested(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              ),
+                            )
+                          }
+                      },
                     );
                   }
-                  if (state is AuthLoading) {
+                  if (state is LoginLoading) {
                     return SubmitButton(
                       text: "",
                       textStyle: sfSemibold(tColor: Colors.white, tSize: 17),
@@ -160,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      event: () => {_loginRequested()},
+                      event: () => {},
                     );
                   }
                   return const SizedBox();

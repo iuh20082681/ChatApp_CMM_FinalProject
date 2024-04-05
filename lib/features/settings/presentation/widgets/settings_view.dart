@@ -18,39 +18,59 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BlocConsumer<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is UnAuthenticated) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.initialScreen,
-                  (route) => false,
-                );
-              }
-            },
-            builder: (context, state) {
-              if (state is Authenticated) {
-                return Text(state.email);
-              }
-              return const SizedBox();
-            },
-          ),
-          SizedBox(
-            height: 200,
-          ),
-          SizedBox(
-            child: InkWell(
-              child: Icon(Icons.logout),
-              onTap: () => {
-                _logOutRequested(),
+    return Center(
+      heightFactor: double.infinity,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state is UnAuthenticated) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.initialScreen,
+                    (route) => false,
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state is Authenticated) {
+                  return Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.amber,
+                        child: Text(state.user!.email![0].toUpperCase()),
+                      ),
+                      Text(state.user!.profile!.name!),
+                    ],
+                  );
+                }
+                return const SizedBox();
               },
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 100,
+            ),
+            SizedBox(
+              child: InkWell(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text("Đăng xuất"),
+                  ),
+                ),
+                onTap: () => {
+                  _logOutRequested(),
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

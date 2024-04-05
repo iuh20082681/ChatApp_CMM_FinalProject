@@ -1,12 +1,11 @@
+import '../../../../configs/resources/data_state.dart';
 import '../entities/user.dart';
 
 abstract class AuthRepository {
-  Future<bool> isLogin();
+  Future<DataState<User>> findUserByEmail({required String email});
 
-  Future<User> signInWithEmailAndPassword({
-    required String email,
-    required String password,
-  });
+  Future<DataState<User>> registryNewUser({required User user});
 
-  Future<void> logOut();
+  Future<DataState<User>> login(
+      {required String email, required String password});
 }

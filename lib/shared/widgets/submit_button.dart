@@ -4,10 +4,10 @@ class SubmitButton extends StatelessWidget {
   final String text;
   final TextStyle textStyle;
   final Color bgColor;
-  final event;
-  Widget? customChild;
+  final dynamic event;
+  final Widget? customChild;
 
-  SubmitButton({
+  const SubmitButton({
     super.key,
     required this.text,
     required this.textStyle,

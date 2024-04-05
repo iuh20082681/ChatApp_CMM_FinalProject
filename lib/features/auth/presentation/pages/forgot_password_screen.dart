@@ -57,6 +57,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 isSecure: false,
                 controller: _textEditingController,
                 hintText: "Email",
+                isEmailInput: true,
               ),
               const SizedBox(
                 height: 25,

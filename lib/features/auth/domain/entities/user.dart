@@ -1,37 +1,34 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../shared/enums/enums.dart';
+import '../../data/models/user_model.dart';
 
 class User extends Equatable {
-  final String id;
-  final String email;
-  final String password;
-  final String username;
-  final USERSTATUS userstatus;
+  final String? email;
+  final String? hashPassword;
+  final USERSTATUS? status;
+  final Profile? profile;
 
   const User({
-    required this.id,
     required this.email,
-    required this.password,
-    required this.username,
-    required this.userstatus,
+    required this.hashPassword,
+    required this.profile,
+    required this.status,
   });
 
   User copyWith({
-    String? id,
     String? email,
-    String? password,
-    String? username,
-    USERSTATUS? userstatus,
+    String? hashPassword,
+    USERSTATUS? status,
+    Profile? profile,
   }) =>
       User(
-        id: id ?? this.id,
         email: email ?? this.email,
-        password: password ?? this.password,
-        username: username ?? this.username,
-        userstatus: userstatus ?? this.userstatus,
+        hashPassword: hashPassword ?? this.hashPassword,
+        status: status ?? this.status,
+        profile: profile ?? this.profile,
       );
 
   @override
-  List<Object?> get props => [id, email, password, username, userstatus];
+  List<Object?> get props => [email, hashPassword, status, profile];
 }
